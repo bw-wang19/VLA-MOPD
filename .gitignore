@@ -1,0 +1,30 @@
+# Model weights
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.ckpt
+*.ipynb
+
+# Cache
+__pycache__/
+*.pyc
+.cache/
+.pytest_cache/
+.ruff_cache/
+.torch_extensions/
+.DS_Store
+
+
+# Environment / secrets
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
+
+logs/
+ref/
+wandb/
+finetune_freeze.py
