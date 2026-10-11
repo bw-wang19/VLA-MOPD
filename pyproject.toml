@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vla-mopd"
+version = "0.1.0"
+description = "Classic multi-teacher on-policy distillation reproduction with VLA-ready primitives"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+dependencies = [
+  "torch>=2.4",
+  "transformers>=4.57,<6",
+  "accelerate>=1.2",
+  "datasets>=3,<6",
+  "PyYAML>=6",
+  "safetensors>=0.4",
+  "sentencepiece>=0.2",
+]
+
+[project.optional-dependencies]
+tracking = ["wandb>=0.18"]
+
+[tool.setuptools.packages.find]
+include = ["vla_mopd*"]
+

@@ -1,0 +1,57 @@
+# Classic MOPD Stage 3: corrected teacher-top-k form (paper Eq. 5).
+model:
+  student_model: "/path/to/stage1-sft"
+  teacher_models:
+    math: "/path/to/math-rl-teacher"
+    instruction_following: "/path/to/if-rl-teacher"
+    swe: "/path/to/swe-rl-teacher"
+  torch_dtype: "bfloat16"
+  trust_remote_code: false
+  attn_implementation: "sdpa"
+  teacher_device: "student"
+  gradient_checkpointing: true
+
+data:
+  train_files:
+    math: "/path/to/math_train.jsonl"
+    instruction_following: "/path/to/if_train.jsonl"
+    swe: "/path/to/swe_train.jsonl"
+  # Paper Stage-3 mixture; enforced over the finite dataset, not every update.
+  domain_ratios:
+    math: 0.35
+    instruction_following: 0.35
+    swe: 0.30
+  max_prompt_length: 2048
+  max_train_samples: null
+  use_chat_template: true
+  num_workers: 4
+
+algorithm:
+  loss_type: "topk"
+  # Still used for sampled-token diagnostics, not for the Eq. 5 gradient.
+  advantage_clip: 5.0
+  # Paper default k.
+  topk_k: 64
+  max_response_length: 1024
+  temperature: 1.0
+  top_p: 1.0
+  enable_thinking: false
+
+training:
+  output_dir: "/path/to/output"
+  run_name: null
+  seed: 42
+  max_steps: 1000
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 16
+  learning_rate: 1.0e-5
+  weight_decay: 0.0
+  warmup_steps: 25
+  max_grad_norm: 1.0
+  mixed_precision: "bf16"
+  logging_steps: 1
+  save_steps: 100
+  resume_from_checkpoint: null
+  report_to: "none"
+  wandb_project: "vla-mopd"
+

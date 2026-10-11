@@ -1,0 +1,10 @@
+# Top-level versions used for the CPU validation in this repository.
+# The local torch build is 2.12.1+cu132; select the appropriate PyTorch wheel
+# index for the target CUDA installation.
+torch==2.12.1
+transformers==5.12.1
+accelerate==1.14.0
+datasets==5.0.0
+PyYAML==6.0.3
+safetensors==0.8.0
+tokenizers==0.22.2

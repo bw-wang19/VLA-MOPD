@@ -1,0 +1,67 @@
+# Classic MOPD Stage 3: sampled-token policy-gradient form (Eq. 3-4).
+# Replace every /path/to value. Student and all teachers should branch from the
+# same Stage-1 SFT checkpoint and use exactly the same tokenizer vocabulary.
+model:
+  student_model: "/path/to/stage1-sft"
+  teacher_models:
+    math: "/path/to/math-rl-teacher"
+    instruction_following: "/path/to/if-rl-teacher"
+    swe: "/path/to/swe-rl-teacher"
+  torch_dtype: "bfloat16"
+  trust_remote_code: false
+  attn_implementation: "sdpa"
+  # "student" means each process's training device; "cpu" is slower but
+  # useful for a memory-bounded smoke test.
+  teacher_device: "student"
+  gradient_checkpointing: true
+
+data:
+  train_files:
+    math: "/path/to/math_train.jsonl"
+    instruction_following: "/path/to/if_train.jsonl"
+    swe: "/path/to/swe_train.jsonl"
+  # Paper Stage-3 mixture: Math : IF : SWE = 0.35 : 0.35 : 0.30.
+  # The local mixer enforces this over the finite dataset, not every update.
+  domain_ratios:
+    math: 0.35
+    instruction_following: 0.35
+    swe: 0.30
+  max_prompt_length: 2048
+  max_train_samples: null
+  use_chat_template: true
+  num_workers: 4
+
+algorithm:
+  loss_type: "pg"
+  # Paper default A_max.
+  advantage_clip: 5.0
+  topk_k: 64
+  max_response_length: 1024
+  temperature: 1.0
+  # 1.0 means no nucleus truncation, matching the reported eval decoder.
+  top_p: 1.0
+  enable_thinking: false
+
+training:
+  # This is an output root. The code adds mopd/<loss>/<run_name>/.
+  output_dir: "/path/to/output"
+  run_name: null
+  seed: 42
+  max_steps: 1000
+  per_device_train_batch_size: 1
+  # Effective global batch = per-device batch x world size x accumulation.
+  # The paper used global BS=2048 and N=1; set this for your world size.
+  gradient_accumulation_steps: 16
+  # The classic paper does not report the Stage-3 LR; this is an implementation
+  # default and must be logged as such.
+  learning_rate: 1.0e-5
+  weight_decay: 0.0
+  warmup_steps: 25
+  max_grad_norm: 1.0
+  mixed_precision: "bf16"
+  logging_steps: 1
+  save_steps: 100
+  resume_from_checkpoint: null
+  report_to: "none"
+  wandb_project: "vla-mopd"
+

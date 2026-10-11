@@ -14,6 +14,13 @@ __pycache__/
 .ruff_cache/
 .torch_extensions/
 .DS_Store
+*.egg-info/
+build/
+dist/
+.venv/
+.coverage
+coverage.xml
+htmlcov/
 
 
 # Environment / secrets
@@ -25,6 +32,12 @@ __pycache__/
 .idea/
 
 logs/
-ref/
+ref/*
+!ref/README.md
 wandb/
 finetune_freeze.py
+
+# Local experiment artifacts
+outputs/
+checkpoints/
+*.log
