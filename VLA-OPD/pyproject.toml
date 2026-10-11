@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vla-opd-reproduction"
+version = "0.1.0"
+description = "Independent algorithm-level implementation of VLA-OPD"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+dependencies = [
+  "torch>=2.1",
+  "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+include = ["vla_opd*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+

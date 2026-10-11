@@ -1,0 +1,30 @@
+# Executable correctness demo. Only group_size=8 mirrors a value reported by
+# the paper; the tiny batch, horizon, optimizer, and temperatures are local
+# smoke-test defaults, not claimed paper hyperparameters.
+algorithm:
+  group_size: 8
+  prompt_batch_size: 4
+  max_episode_steps: 4
+  score_batch_size: 64
+  student_temperature: 1.0
+  teacher_temperature: 1.0
+  # trajectory_sum | trajectory_token_mean | global_token_mean
+  reduction: trajectory_sum
+  reward_clip: null
+  on_policy_logprob_tolerance: 0.0001
+
+training:
+  num_updates: 12
+  learning_rate: 0.03
+  weight_decay: 0.0
+  max_grad_norm: 1.0
+  seed: 42
+  output_dir: outputs/toy
+  log_every: 1
+  save_every: 6
+
+runtime:
+  factory: vla_opd.toy:build_experiment
+  kwargs:
+    num_prompts: 8
+    action_vocab_size: 5
