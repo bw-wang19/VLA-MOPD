@@ -1,0 +1,26 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.venv/
+venv/
+.env
+
+# Local experiment artifacts and large model files
+outputs/
+checkpoints/
+wandb/
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+
